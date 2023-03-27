@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Resume</title>
+    <style>
+        *{
+            size: A4;
+            size: B5;
+            size: JIS-B4;
+            size: letter;
+            font-family: 'Times New Roman', Times, serif;
+            font-size:18px;
+        }
+        .text-center{
+            text-align: center;
+        }
+        h2{
+            text-transform: uppercase;
+        }
+        .bg{
+            padding: 5px;
+            background-color: rgb(209, 209, 209);
+        }
+        .bg1{
+            padding: 2px;
+            background-color:rgb(209, 209, 209) ;
+            border: 2px solid white;
+        }
+        
+        table td{
+            display: block;
+            width: 100%;
+            
+        }
+        .space{
+            margin-left: 20px;
+            
+        }
+        .space p{
+            margin-left: 10px;
+        }
+        .space li{
+            margin-left: 10px;
+        }
+        .name{
+            margin-left: 550px;
+        }
+    </style>
+</head>
+<body>
+    <h2 class=" text-center">{{ context.name }}</h2>
+    <p class=" text-center"><span class=" text-center">{{ context.address }}</span><br><span>{{ context.mobile }}</span>|<span>{{ context.email }}</span></p>
+    
+    <div class=" container">
+
+        {% if context.objective != "" %}
+        <div class="bg">
+            <p>OBJECTIVE</p>
+        </div>
+        <div class="space">
+            <p>{{ context.objective }}</p>
+        </div>
+        {%endif%}
+
+        
+
+        {% if context.institution|length > 1 %}
+                
+                <div class="bg">
+                    <p>EDUCATION QUALIFICATION</p>
+                </div>
+
+                <div class="space">
+                
+
+                    <table>
+
+                        
+                        <tr>
+                            <td class="bg1"><b>Institution</b></td>
+                        {% for i in context.institution %}
+                        {% if i != "" %}
+                            <td style="width:100%"><b><center>{{ i }}</center></b></td>
+                            {%endif%}
+                    {%endfor%}
+                    
+                    </tr>
+                    <tr>
+                        <td class="bg1"><b>Qualification</b></td>
+                        {% for i in context.qualification %}
+                        {% if i != "" %}
+                    <td>{{ i }}</td>
+                    {%endif%}
+                    {%endfor%}
+                    </tr>
+                    <tr>
+                        <td class="bg1"><b>Year</b></td>
+                        {% for i in context.year %}
+                        {% if i != "" %}
+                        <td>{{ i }}</td>
+                        {%endif%}
+                    {%endfor%}
+                    </tr>
+
+                    <tr>
+                        <td class="bg1"><b>Per\CGPA</b></td>
+                        {% for i in context.cgpa %}
+                        {% if i != "" %}
+                        <td>{{ i }}</td>
+                        {%endif%}
+                    {%endfor%}
+                    </tr>
+                    </table>
+                </div>      
+
+                {%endif%}
+
+
+                {% if context.skill|length > 1 %}
+                <div class="bg">
+                    <p>SKILLS</p>
+                </div>
+            {% endif %}           
+
+
+            <div class="space">
+                {% for i in context.skill %}
+                {% if i != "" %}
+                <li>{{ i }}</li>
+                {%endif%}
+                {% endfor %}
+                </div>
+
+                
+                {% if context.project|length > 1 %}
+                <div class="bg">
+                    <p>PROJECTS</p>
+                </div>
+            {% endif %}
+
+
+                <div class="space">
+                    {% for i in context.project %}
+                    {% if i != "" %}
+                    <li>{{ i }}</li>
+    
+                    {%endif%}
+                    {% endfor %}
+            </div>
+
+
+
+            {% if context.experience|length > 1 %}
+                <div class="bg">
+                    <p>EXPERIENCE</p>
+                </div>
+            {% endif %}
+
+
+                <div class="space">
+                    {% for i in context.experience %}
+                    {% if i != "" %}
+                    <li>{{ i }}</li>
+                    {%endif%}
+                    {% endfor %}
+            </div>
+
+            {% if context.declaration != "" %}
+        <div class="bg">
+            <p>DECLARATION</p>
+        </div>
+        <div class="space">
+            <p>{{ context.declaration }}</p>
+        </div>
+        {%endif%}
+        <br>
+        <label>Date :</label>
+        <br>
+        <label>Place :</label>
+<div class="name">
+        <p>({{ context.name }})</p>
+    </div>
+
+
+
+</div>
+
+</body>
+</html>

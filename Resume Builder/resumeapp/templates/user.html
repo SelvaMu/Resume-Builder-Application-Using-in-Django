@@ -1,0 +1,267 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Entry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" 
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>
+      
+      form .category{
+           display: flex;
+           width: 80%;
+           margin: 14px 0 ;
+           justify-content: space-around;
+         }
+         form .category label{
+           display: flex;
+           align-items: center;
+           cursor: pointer;
+         }
+         form .category label .dot{
+          height: 18px;
+          width: 18px;
+          border-radius: 50%;
+          margin-right: 10px;
+          background: #d9d9d9;
+          border: 5px solid transparent;
+          transition: all 0.3s ease;
+        }
+         #dot-1:checked ~ .category label .one,
+         #dot-2:checked ~ .category label .two{
+           background: #9b59b6;
+           border-color: #d9d9d9;
+         }
+         form input[type="radio"]{
+           display: none;
+         }
+      .gender{
+        width: 150px;
+        height: 250px;
+      }
+    </style>
+</head>
+<body>
+    <h1 class=" text-center">Resume Builder</h1>
+
+    <div class="text-center text-bg-danger">
+      <br>
+      {%for message in messages%}
+      <p>{{message}}</p>
+      {%endfor%}
+  </div>
+
+    <div class=" container">
+      <div class=" m-lg-5 d-flex justify-content-center">
+        <form action="/generate" method="POST" id="add_form">
+            {%csrf_token%}
+            <div class="">
+                <input type="text" class="form-control" pattern="^[a-zA-z\s\.\@\_\-+]+$" name="name" autocomplete="off" id="name" placeholder="Name" required>
+            </div>
+            <br>
+            <div class="">
+                <input type="text" class=" form-control" pattern="[0-9]{10}" name="mobile" id="mobile" autocomplete="off" placeholder="Mobile Number" required>
+            </div>
+            <br>
+            <div class="">
+              <input type="email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" id="email" autocomplete="off" class="form-control" placeholder="Email Address" required>
+            </div>
+            <br>
+            <div class="">
+                <textarea class=" form-control" rows="5px" cols="30px" name="address" placeholder="Address" autocomplete="off" id="address" required></textarea>
+            </div>
+            <br>
+            <div class="">
+                <textarea class=" form-control" rows="5px" cols="30px" name="objective" id="objective" autocomplete="off" placeholder="Objective"></textarea>
+            </div>
+            <br>
+            <table class="table table-bordered form-control">
+                <thead class="table-success w-75">
+                  <tr>
+                    
+                    <th scope="col" class="w-25">Institution</th>
+                    <th scope="col" class="text-end w-25">Qualification</th>
+                    <th scope="col" class="text-end w-25">Year Of Passing</th>
+                    <th scope="col" class="text-end w-25">Percentage</th>
+                    <th scope="col" class="NoPrint">                         
+                        <button type="button" class="btn btn-sm btn-success" onclick="BtnAdd()">+</button>
+                      
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody id="TBody">
+                  <tr id="TRow" class="d-none">
+                    
+                    <td><input type="text" class="form-control" autocomplete="off" name="institution" placeholder="Institution"></td>
+                    <td><input type="text" class="form-control text-end" name="qualification" autocomplete="off" placeholder="Qualification"></td>
+                    <td><input type="text" class="form-control text-end" name="year" autocomplete="off" placeholder="Year Of Passing"></td>
+                    <td><input type="text" class="form-control text-end" name="cgpa" pattern="^[0-9\s\.\@\_\-+]{2,4}$" autocomplete="off" placeholder="Percentage"></td>
+                    <td class="NoPrint"><button type="button" class="btn btn-sm btn-danger" onclick="BtnDel(this)">X</button></td>
+                  </tr>
+                </tbody>
+              </table>
+                
+            <table class="table table-bordered form-control">
+                <thead class="table-success w-75">
+                  <tr>
+                    
+                    <th scope="col" class="w-100">Skills</th>
+                    <th scope="col" class="NoPrint">                         
+                        <button type="button" class="btn btn-sm btn-success" onclick="skilladd()">+</button>
+                      
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody id="sbody">
+                  <tr id="srow" class="d-none">
+                    <td><input type="text" class="form-control" name="skill" autocomplete="off" placeholder="Skills"></td>
+                    <td class="NoPrint"><button type="button" class="btn btn-sm btn-danger" onclick="skillremove(this)">X</button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+
+            <table class="table table-bordered form-control">
+                <thead class="table-success w-75">
+                  <tr>
+                    
+                    <th scope="col" class="w-100">Projects</th>
+                    <th scope="col" class="NoPrint">                         
+                        <button type="button" class="btn btn-sm btn-success" onclick="projectadd()">+</button>
+                      
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody id="pbody">
+                  <tr id="prow" class="d-none">
+                    <td><input type="text" class="form-control" autocomplete="off" name="project" placeholder="Project"></td>
+                    <td class="NoPrint"><button type="button" class="btn btn-sm btn-danger" onclick="projectremove(this)">X</button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <table class="table table-bordered form-control">
+                <thead class="table-success w-75">
+                  <tr>
+                    
+                    <th scope="col" class="w-100">Experience</th>
+                    <th scope="col" class="NoPrint">                         
+                        <button type="button" class="btn btn-sm btn-success" onclick="experienceadd()">+</button>
+                      
+                    </th>
+
+                  </tr>
+                </thead>
+                <tbody id="ebody">
+                  <tr id="erow" class="d-none">
+                    <td><textarea class=" form-control" rows="5px" cols="30px" name="experience" id="experience" autocomplete="off" placeholder="Experience"></textarea></td>
+                    <td class="NoPrint"><button type="button" class="btn btn-sm btn-danger" onclick="experienceremove(this)">X</button></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <br>
+            <div class="">
+                <textarea class=" form-control" rows="5px" cols="30px" name="declaration" id="declaration" autocomplete="off" placeholder="Declaration"></textarea>
+            </div>
+            <br>
+
+
+
+            <div class="gender-details">
+                <input type="radio" name="resume" id="dot-1" value="0">
+                <input type="radio" name="resume" id="dot-2" value="1">
+                <span class="gender-title">Resume Template :</span>
+                <div class="category">
+                  <label for="dot-1">
+                  <span class="dot one"></span>
+                  <span><img class="gender" src="{% static '/media/re1.jpg'%}" alt=""></span>
+                </label>
+                <label for="dot-2">
+                  <span class="dot two"></span>
+                  <span><img class="gender" src="{% static '/media/re2.jpg'%}" alt=""></span>
+                </label>
+              </div>
+              </div>
+
+              <div class=" d-flex justify-content-center">
+                <input type="submit" class=" btn btn-success" value="Generate PDF">
+              </div>
+        </form>
+        </div>
+    </div>
+    
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js">
+    </script>
+    <script>
+        function BtnAdd()
+{
+    /*Add Button*/
+    var v = $("#TRow").clone().appendTo("#TBody") ;
+    $(v).find("input").val('');
+    $(v).removeClass("d-none");
+}
+
+function BtnDel(v)
+{
+    /*Delete Button*/
+       $(v).parent().parent().remove(); 
+       GetTotal();
+}
+
+function skilladd()
+{
+    /*Add Button*/
+    var v = $("#srow").clone().appendTo("#sbody") ;
+    $(v).find("input").val('');
+    $(v).removeClass("d-none");
+}
+
+function skillremove(v)
+{
+    /*Delete Button*/
+       $(v).parent().parent().remove(); 
+       GetTotal();
+}
+
+
+function projectadd()
+{
+    /*Add Button*/
+    var v = $("#prow").clone().appendTo("#pbody") ;
+    $(v).find("input").val('');
+    $(v).removeClass("d-none");
+}
+
+function projectremove(v)
+{
+    /*Delete Button*/
+       $(v).parent().parent().remove(); 
+       GetTotal();
+}
+
+
+function experienceadd()
+{
+    /*Add Button*/
+    var v = $("#erow").clone().appendTo("#ebody") ;
+    $(v).find("textarea").val('');
+    $(v).removeClass("d-none");
+}
+
+function experienceremove(v)
+{
+    /*Delete Button*/
+       $(v).parent().parent().remove(); 
+       GetTotal();
+}
+    </script>
+</body>
+</html>
